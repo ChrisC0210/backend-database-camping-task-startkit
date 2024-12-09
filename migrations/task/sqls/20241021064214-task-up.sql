@@ -21,22 +21,16 @@ insert into "USER" (name, email, role) values
 ('好野人', 'richman@hexschooltest.io', 'USER'),
 ('Q太郎', 'starplatinum@hexschooltest.io', 'USER'),
 ('透明人', 'opcatiy0@hexschooltest.io', 'USER');
-
 -- 1-2 修改：用 Email 找到 李燕容、肌肉棒子、Q太郎，如果他的 Role 為 USER 將他的 Role 改為 COACH
--- 李燕容
 UPDATE "USER"
 SET ROLE = 'COACH'
 WHERE email = 'lee2000@hexschooltest.io'
--- 肌肉棒子
 UPDATE "USER"
 SET ROLE = 'COACH'
 WHERE email = 'muscle@hexschooltest.io'
--- Q太郎
 UPDATE "USER"
 SET ROLE = 'COACH'
 WHERE email = 'starplatinum@hexschooltest.io'
--- 確認是否修改成功
-SELECT * FROM "USER";
 
 -- 1-3 刪除：刪除USER 資料表中，用 Email 找到透明人，並刪除該筆資料
 DELETE FROM "USER"
@@ -44,7 +38,6 @@ WHERE email = 'opcatiy0@hexschooltest.io'
 
 -- 1-4 查詢：取得USER 資料表目前所有用戶數量（提示：使用count函式）
 SELECT COUNT(*) FROM "USER";
--- Query Result: count 5
 
 -- 1-5 查詢：取得 USER 資料表所有用戶資料，並列出前 3 筆（提示：使用limit語法）
 SELECT * FROM "USER"
@@ -66,8 +59,6 @@ VALUES
 ('7堂組合包方案',7,1400),
 ('14堂組合包方案',14,2520),
 ('21堂組合包方案',21,4800)
--- 確認方案是否新增成功(小步測試)
-SELECT * FROM "CREDIT_PACKAGE";
 
 -- 2-2. 新增：在 `CREDIT_PURCHASE` 資料表，新增三筆資料：（請使用 name 欄位做子查詢）
     -- 1. `王小明` 購買 `14 堂組合包方案`
@@ -102,9 +93,6 @@ VALUES
   (SELECT "credit_amount" FROM "CREDIT_PACKAGE" WHERE name = '14堂組合包方案'),
   (SELECT price FROM "CREDIT_PACKAGE" WHERE name = '14堂組合包方案')
 );
--- 確認是否寫入資料成功
-SELECT * FROM "CREDIT_PURCHASE";
-
 
 -- ████████  █████   █    ████   
 --   █ █   ██    █  █         ██ 
@@ -132,8 +120,6 @@ VALUES
 INSERT INTO "COACH" (user_id, experience_years)
 VALUES
 ((SELECT id FROM "USER" WHERE email='starplatinum@hexschooltest.io'),2)
--- 檢視教練表是否新增成功
-SELECT * FROM "COACH";
 
 -- 3-2. 新增：承1，為三名教練新增專長資料至 `COACH_LINK_SKILL` ，資料需求如下：
     -- 1. 所有教練都有 `重訓` 專長
@@ -155,8 +141,6 @@ values
 ((SELECT id FROM "COACH" WHERE user_id = (SELECT id FROM "USER" WHERE email ='starplatinum@hexschooltest.io')), (SELECT id FROM "SKILL" WHERE name='有氧運動')),
 ((SELECT id FROM "COACH" WHERE user_id = (SELECT id FROM "USER" WHERE email ='starplatinum@hexschooltest.io')), (SELECT id FROM "SKILL" WHERE name='復健訓練'))
 
--- 檢視技能表是否新增成功
-SELECT * FROM "COACH_LINK_SKILL";
 -- 3-3 修改：更新教練的經驗年數，資料需求如下：
     -- 1. 教練`肌肉棒子` 的經驗年數為3年
     -- 2. 教練`Q太郎` 的經驗年數為5年
@@ -174,9 +158,6 @@ where user_id = (
     select id 
     from "USER" 
     where email = 'starplatinum@hexschooltest.io');
-
--- 檢視教練表是否更新成功
-SELECT * FROM "COACH";
 
 -- 3-4 刪除：新增一個專長 空中瑜伽 至 SKILL 資料表，之後刪除此專長。
 INSERT INTO "SKILL" (NAME) VALUES ('空中瑜珈');
@@ -208,8 +189,6 @@ insert into "COURSE" (user_id, skill_id, name, start_at, end_at, max_participant
   'https://test-meeting.test.io'
 );
 
--- 檢視課程表是否新增成功
-SELECT * FROM "COURSE";
 
 -- ████████  █████   █    █████ 
 --   █ █   ██    █  █     █     
@@ -246,9 +225,6 @@ insert into "COURSE_BOOKING" (user_id, course_id, booking_at, status) values
 update "COURSE_BOOKING" set cancelled_at = '2024-11-24 17:00:00',status = '課程已取消' 
 where user_id = (select id from "USER" where email = 'wXlTq@hexschooltest.io') 
 and course_id = (select id from "COURSE" where user_id = (select id from "USER" where email = 'lee2000@hexschooltest.io'));
--- 查看預約表是否更新成功
-SELECT * FROM "COURSE_BOOKING";
-
 -- 5-3. 新增：`王小明`再次預約 `李燕容`   的課程，請在`COURSE_BOOKING`新增一筆資料：
     -- 1. 預約人設為`王小明`
     -- 2. 預約時間`booking_at` 設為2024-11-24 17:10:25
